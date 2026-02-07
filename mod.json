@@ -1,0 +1,371 @@
+{
+	"Name": "[ccmu] Colorchat + MentionedU",
+	"Description": "[@drachenfruchl]\n\nCustomize everything to your liking!\nIncludes keyword highlighting, an animated chat display, typing sounds and custom prefixes with easy to use mod settings",
+	"Version": "2.1.0",
+	"LoadPriority": 69420,
+
+	"Scripts": [
+		{
+			"Path": "ccmu.nut",
+        	"RunOn": "MP && CLIENT",
+			"ClientCallback": {
+				"After": "ccmu_Init"
+			}
+		},
+		{
+			"Path": "ccmuSettings.nut",
+			"RunOn": "UI",
+			"UICallback": {
+				"Before": "ccmuSettings_Init"
+			}
+		}
+    ],
+	
+	"ConVars": [
+		{
+			"Name": "cv_ccmu_colorchat_enabled",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_prefixes_enabled",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		
+		{
+			"Name": "cv_ccmu_prefix_team",
+			"DefaultValue": "[TEAM] ",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_prefix_s",
+			"DefaultValue": "",
+			"Flags": 16777216
+		},
+		
+		{
+			"Name": "cv_ccmu_prefix_ea",
+			"DefaultValue": "[FRIEND] ",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_prefix_party",
+			"DefaultValue": "[PARTY] ",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_prefix_friendly",
+			"DefaultValue": "",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_prefix_opp",
+			"DefaultValue": "",
+			"Flags": 16777216
+		},
+		
+		{
+			"Name": "cv_ccmu_show_nettags",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_show_nettag_team",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_show_nettag_friendly",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_show_nettag_opp",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_show_nettag_s",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_show_nettag_party",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_show_nettag_ea",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+
+		{
+			"Name": "cv_ccmu_dynamic_chat_enabled",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_dynamic_chat_speed",
+			"DefaultValue": "0.02",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_dynamic_chat_tone_enabled",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_dynamic_chat_tone_team",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_dynamic_chat_tone_s",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_dynamic_chat_tone_party",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_dynamic_chat_tone_ea",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_dynamic_chat_tone_friendly",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_dynamic_chat_tone_opp",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+
+		{
+			"Name": "cv_ccmu_f_enabled",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_messageColor_friendly",
+			"DefaultValue": "222 222 222",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerNameColor_friendly",
+			"DefaultValue": "52 234 254",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerTagColor_friendly",
+			"DefaultValue": "52 234 254",
+			"Flags": 16777216
+		},
+		{
+			"Name" : "cv_ccmu_playerSeperatorColor_friendly",
+			"DefaultValue": "52 234 254",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperator_friendly",
+			"DefaultValue": ": ",
+			"Flags": 16777216
+		},
+
+		{
+			"Name": "cv_ccmu_o_enabled",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_messageColor_opp",
+			"DefaultValue": "222 222 222",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerNameColor_opp",
+			"DefaultValue": "231 82 6",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerTagColor_opp",
+			"DefaultValue": "231 82 6",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperatorColor_opp",
+			"DefaultValue": "231 82 6",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperator_opp",
+			"DefaultValue": ": ",
+			"Flags": 16777216
+		},
+		
+		{
+			"Name": "cv_ccmu_party_enabled",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_messageColor_party",
+			"DefaultValue": "222 222 222",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerNameColor_party",
+			"DefaultValue": "87 151 219",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerTagColor_party",
+			"DefaultValue": "87 151 219",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperatorColor_party",
+			"DefaultValue": "87 151 219",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperator_party",
+			"DefaultValue": ": ",
+			"Flags": 16777216
+		},
+
+		{
+			"Name": "cv_ccmu_ea_enabled",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_messageColor_ea",
+			"DefaultValue": "222 222 222",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerNameColor_ea",
+			"DefaultValue": "91 255 31",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerTagColor_ea",
+			"DefaultValue": "91 255 31",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperatorColor_ea",
+			"DefaultValue": "91 255 31",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperator_ea",
+			"DefaultValue": ": ",
+			"Flags": 16777216
+		},
+
+		{
+			"Name": "cv_ccmu_s_enabled",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_messageColor_s",
+			"DefaultValue": "222 222 222",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerNameColor_s",
+			"DefaultValue": "254 184 0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerTagColor_s",
+			"DefaultValue": "254 184 0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperatorColor_s",
+			"DefaultValue": "254 184 0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperator_s",
+			"DefaultValue": ": ",
+			"Flags": 16777216
+		},
+		
+		{
+			"Name": "cv_ccmu_t_enabled",
+			"DefaultValue": "0",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_messageColor_t",
+			"DefaultValue": "222 222 222",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerNameColor_t",
+			"DefaultValue": "52 234 254",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerTagColor_t",
+			"DefaultValue": "52 234 254",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperatorColor_t",
+			"DefaultValue": "52 234 254",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_playerSeperator_t",
+			"DefaultValue": ": ",
+			"Flags": 16777216
+		},
+
+		{
+			"Name": "cv_ccmu_notifier_enabled",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_notifier_keywords",
+			"DefaultValue": "",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_notifier_tag",
+			"DefaultValue": "!",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_play_mention_sound",
+			"DefaultValue": "1",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_notifier_tag_color",
+			"DefaultValue": "188 63 188",
+			"Flags": 16777216
+		},
+		{
+			"Name": "cv_ccmu_notifier_keyword_color",
+			"DefaultValue": "245 245 67",
+			"Flags": 16777216
+		}
+	],
+
+	"Dependencies": {
+        "HAS_TOOLS": "drachenfruchl.tools"
+    }
+}
