@@ -104,7 +104,7 @@ void function getConfig(){
 			f_seperator     			= ": "
 		}
 
-		o_enabled						= GetConVarBool(      "o_enabled" ) 						
+		o_enabled						= GetConVarBool(      "cv_ccmu_o_enabled" ) 						
 		if( o_enabled ){
 			o_messageColor          	= parseColor(         GetConVarString( "cv_ccmu_messageColor_opp" ))
 			o_nameColor             	= parseColor(         GetConVarString( "cv_ccmu_playerNameColor_opp" ))
@@ -236,12 +236,6 @@ void function setTeamNum(){
 	while( GetLocalClientPlayer() == null )
 		WaitFrame()
 	teamNum = GetLocalClientPlayer().GetTeam()
-
-	debugPrint( teamNum.tostring() )
-}
-
-void function debugPrint( string text ){
-	printt( "[CCMUV2] " + text )
 }
 
 ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
@@ -314,7 +308,7 @@ ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
 	}
 
 	if( notifier_enabled ){
-		//if( ms.player != GetLocalClientPlayer() ){
+		if( ms.player != GetLocalClientPlayer() ){
 			foreach( keyword in n_keywords ){
 				if( keyword.find( "<key>" ) != null ) 
 					continue
@@ -336,7 +330,7 @@ ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
 				// if( GetMapName() != "mp_lobby" )
 				// 	SetTimedEventNotification( 2.0, format( "@%s mentionedU", playerUsername ) )
 			}
-		//}
+		}
 	}
 
 	string 	totalTag 	= ""
@@ -375,20 +369,20 @@ ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
 
 	if( mentioned ){
 		format_msg = format( "%s[%s] ",
-			( n_tagColor        == "rgb" ? rainbowText( n_tag, "" )  		: n_tagColor.slice( 0, 1 ) == "f" ? rainbowText( n_tag, n_tagColor.slice( 1 ) ) 				: n_tagColor ),
-			( n_tagColor        == "rgb" ? ""                                   : n_tagColor.slice( 0, 1 ) == "f" ? "" 																: n_tag )
+			( n_tagColor        == "rgb" ? rainbowText( n_tag, "" )  : n_tagColor.slice( 0, 1 ) == "f" ? rainbowText( n_tag, n_tagColor.slice( 1 ) ) 	: n_tagColor ),
+			( n_tagColor        == "rgb" ? ""                        : n_tagColor.slice( 0, 1 ) == "f" ? "" 										 	: n_tag )
 		)
 	}
 
 	format_msg += format( "%s%s%s%s%s%s",
-		( tagColor        == "rgb" ? rainbowText( totalTag, "" )  		: tagColor.slice( 0, 1 ) == "f" ? rainbowText( totalTag, tagColor.slice( 1 ) ) 				: tagColor ),
-		( tagColor        == "rgb" ? ""                                     	: tagColor.slice( 0, 1 ) == "f" ? "" 																: totalTag ),
+		( tagColor        == "rgb" ? rainbowText( totalTag, "" )  		: tagColor.slice( 0, 1 ) == "f" 		? rainbowText( totalTag, tagColor.slice( 1 ) ) 			: tagColor ),
+		( tagColor        == "rgb" ? ""                                 : tagColor.slice( 0, 1 ) == "f" 		? "" 													: totalTag ),
 
-		( nameColor       == "rgb" ? rainbowText( playerUsername, "" )   	: nameColor.slice( 0, 1 ) == "f" ? rainbowText( playerUsername, nameColor.slice( 1 ) ) 		: nameColor ),
-		( nameColor       == "rgb" ? ""                                        	: nameColor.slice( 0, 1 ) == "f" ? "" 																: playerUsername ),
+		( nameColor       == "rgb" ? rainbowText( playerUsername, "" )  : nameColor.slice( 0, 1 ) == "f" 		? rainbowText( playerUsername, nameColor.slice( 1 ) ) 	: nameColor ),
+		( nameColor       == "rgb" ? ""                                 : nameColor.slice( 0, 1 ) == "f" 		? "" 													: playerUsername ),
 
-		( seperatorColor  == "rgb" ? rainbowText( seperator, "" )         : seperatorColor.slice( 0, 1 ) == "f" ? rainbowText( seperator, seperatorColor.slice( 1 ) ) 	: seperatorColor ),
-		( seperatorColor  == "rgb" ? ""                                         : seperatorColor.slice( 0, 1 ) == "f" ? "" 															: seperator )
+		( seperatorColor  == "rgb" ? rainbowText( seperator, "" )       : seperatorColor.slice( 0, 1 ) == "f" 	? rainbowText( seperator, seperatorColor.slice( 1 ) ) 	: seperatorColor ),
+		( seperatorColor  == "rgb" ? ""                                 : seperatorColor.slice( 0, 1 ) == "f" 	? "" 													: seperator )
 	)
 
 	if( dynamic_chat_enabled ){
