@@ -1,7 +1,7 @@
 {
-	"Name": "[ccmu] Colorchat + MentionedU",
-	"Description": "[@drachenfruchl]\n\nCustomize everything to your liking!\nIncludes keyword highlighting, an animated chat display, typing sounds and custom prefixes with easy to use mod settings",
-	"Version": "2.1.1",
+	"Name": "Colorchat + MentionedU",
+	"Description": "[[@drachenfruchl]]\n\nCustomize everything to your liking!\nIncludes keyword highlighting, an animated chat display, typing sounds and custom prefixes with easy to use mod settings",
+	"Version": "2.2.1",
 	"LoadPriority": 69421,
 
 	"Scripts": [

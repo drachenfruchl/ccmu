@@ -69,16 +69,16 @@ string				prefix_opp
 string				prefix_team
 
 bool			 	show_nettags
-bool			 	show_nettag_s			
-bool			 	show_nettag_party		
-bool			 	show_nettag_ea			
+bool			 	show_nettag_s
+bool			 	show_nettag_party
+bool			 	show_nettag_ea
 bool			 	show_nettag_friendly
-bool			 	show_nettag_opp			
-bool			 	show_nettag_team		
+bool			 	show_nettag_opp
+bool			 	show_nettag_team
 
 const string 		fallback_friendlyColor   	= "\x1b[38;2;52;234;254m"
-const string 		fallback_enemyColor      	= "\x1b[38;2;231;82;6m" 
-const string 		fallback_messageColor    	= "\x1b[38;2;222;222;222m" 
+const string 		fallback_enemyColor      	= "\x1b[38;2;231;82;6m"
+const string 		fallback_messageColor    	= "\x1b[38;2;222;222;222m"
 
 int 				teamNum 					= 0
 int             	message_buffer 				= 0
@@ -104,7 +104,7 @@ void function getConfig(){
 			f_seperator     			= ": "
 		}
 
-		o_enabled						= GetConVarBool(      "cv_ccmu_o_enabled" ) 						
+		o_enabled						= GetConVarBool(      "cv_ccmu_o_enabled" )
 		if( o_enabled ){
 			o_messageColor          	= parseColor(         GetConVarString( "cv_ccmu_messageColor_opp" ))
 			o_nameColor             	= parseColor(         GetConVarString( "cv_ccmu_playerNameColor_opp" ))
@@ -124,7 +124,7 @@ void function getConfig(){
 			p_messageColor				= parseColor(         GetConVarString( "cv_ccmu_messageColor_party" ))
 			p_nameColor					= parseColor(         GetConVarString( "cv_ccmu_playerNameColor_party" ))
 			p_tagColor					= parseColor(         GetConVarString( "cv_ccmu_playerTagColor_party" ))
-			p_seperatorColor			= parseColor(         GetConVarString( "cv_ccmu_playerSeperatorColor_party" ))	
+			p_seperatorColor			= parseColor(         GetConVarString( "cv_ccmu_playerSeperatorColor_party" ))
 			p_seperator					= GetConVarString(    "cv_ccmu_playerSeperator_party" )
 		}
 
@@ -158,7 +158,7 @@ void function getConfig(){
 			t_nameColor					= fallback_friendlyColor
 			t_tagColor					= fallback_friendlyColor
 			t_seperatorColor			= fallback_friendlyColor
-			t_seperator					= ": " 
+			t_seperator					= ": "
 		}
 	}
 
@@ -223,11 +223,11 @@ void function setTotalFX(){
 
 void function ccmu_Init(){
 	#if HAS_TOOLS
-		//getConfig() // Load config only once every game (less performance heavy, less flexible)
+		getConfig() // Load config only once every game (less performance heavy, less flexible)
 		dtool_loadFriendsAndParty()
 		AddCallback_OnReceivedSayTextMessage( colorchatMU )
 		thread setTeamNum()
-	#else 
+	#else
 		printt( "[ccmu] Missing dependencies: drachenfruchl.tools" )
 	#endif
 }
@@ -239,30 +239,21 @@ void function setTeamNum(){
 }
 
 ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
-	getConfig() // Load config on every new message (more performance heavy, more flexible)
-	
-	if( 
-		!notifier_enabled && 
-		!dynamic_chat_enabled && 
-		!colorchat_enabled && 
-		!prefixes_enabled && 
-		!show_nettags 
-	) return ms
+	// getConfig() // Load config on every new message (more performance heavy, more flexible)
 
-	// hide xcp messages
-	var posStartIndex = ms.message.find( "<" )
-	var posEndIndex = ms.message.find( ">" )
-	bool isMsgXCP = ( 
-		ms.message.find( "xcp@" ) != null &&
-		posStartIndex != null && 	
-		posEndIndex != null 
-	)
+	if(
+		!notifier_enabled &&
+		!dynamic_chat_enabled &&
+		!colorchat_enabled &&
+		!prefixes_enabled &&
+		!show_nettags
+	) return ms
 
 	if( isMsgXCP )
 		return ms
 
-	while( message_buffer > 0 ) 
-		WaitFrame()
+	while( message_buffer > 0 )//|| !IsValid( ms.player ) )
+		wait 0
 	message_buffer++
 
 	string          format_msg
@@ -310,7 +301,7 @@ ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
 	if( notifier_enabled ){
 		if( ms.player != GetLocalClientPlayer() ){
 			foreach( keyword in n_keywords ){
-				if( keyword.find( "<key>" ) != null ) 
+				if( keyword.find( "<key>" ) != null )
 					continue
 				if( ms.message.tolower().find( keyword.tolower() ) != null ){
 					rawMessage = replaceMessage( rawMessage, keyword, messageColor )
@@ -319,12 +310,12 @@ ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
 				}
 			}
 
-			if( 
-				n_playMentionSound && 
-				( 
-					mentioned || 
-					ms.message.tolower().find( GetLocalClientPlayer().GetPlayerName().tolower() ) != null 
-				) 
+			if(
+				n_playMentionSound &&
+				(
+					mentioned ||
+					ms.message.tolower().find( GetLocalClientPlayer().GetPlayerName().tolower() ) != null
+				)
 			){
 				GetLocalClientPlayer().ClientCommand( "playvideo mentionsound 1 1" )
 				// if( GetMapName() != "mp_lobby" )
@@ -349,15 +340,15 @@ ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
 		if( isSelf )
 			totalTag += prefix_s
 		else if( isFriendly )
-			totalTag += prefix_friendly	
-		else 
+			totalTag += prefix_friendly
+		else
 			totalTag += prefix_opp
 
 		if( inParty )
 			totalTag += prefix_party
-			
+
 		if( isFriend )
-			totalTag += prefix_ea	
+			totalTag += prefix_ea
 	}
 
 	if( show_nettags ){
@@ -365,7 +356,7 @@ ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
 
 		if( playerTag != "" && showTag )
 			totalTag += playerTag + " "
-	}	
+	}
 
 	if( mentioned ){
 		format_msg = format( "%s[%s] ",
@@ -422,7 +413,7 @@ string function parseColor( string color ){
 	if( rgb.len() != 3 )
 		return "\x1b[0m"
 
-	foreach( channel in rgb ) 
+	foreach( channel in rgb )
 		color += int( clamp( channel.tointeger(), 0, 254 ) ) + ";"
 	color = color.slice( 0, color.len()-1 ) + "m"
 
@@ -430,7 +421,7 @@ string function parseColor( string color ){
 }
 
 array<string> function seperateName( string playerName ){
-	if( playerName.find( " " ) == null ) 
+	if( playerName.find( " " ) == null )
 		return [ "", playerName ]
 
 	var     index_seperator = playerName.find( " " )
@@ -458,6 +449,20 @@ string function replaceMessage( string msg, string word, string messageColor ){
 	return msg
 }
 
+int function ansiSeqLen( string text, int i ){
+    if( i >= text.len() ) 
+		return 0
+    if( text[ i ].tointeger() != 27 )
+		return 0
+
+    var endPos = text.find( "m", i + 1 )
+    if( !IsValid( endPos ) ) 
+		return 0
+    expect int( endPos )
+
+    return endPos - i + 1
+}
+
 void function fadeText_anim( string text, string fadestring ){
 	array<string> colors = [
 		"254 0 0", "254 127 0", "254 254 0", "127 254 0",
@@ -470,24 +475,24 @@ void function fadeText_anim( string text, string fadestring ){
 	int 	a 			= n_keywordColor.len()
 	int 	i 			= 0
 	float 	step 		= colorlen.tofloat() / textlen.tofloat()
-	vector 	v1 	
+	vector 	v1
 	vector  v2
 
 	if( fadestring != "" ){
 		array<string> fades = split( fadestring, "," )
 
 		array<string> rgb1 = split( fades[ 0 ], " " )
-		v1 = < 
-			rgb1[ 0 ].tointeger(), 
-			rgb1[ 1 ].tointeger(), 
-			rgb1[ 2 ].tointeger() 
+		v1 = <
+			rgb1[ 0 ].tointeger(),
+			rgb1[ 1 ].tointeger(),
+			rgb1[ 2 ].tointeger()
 		>
 
 		array<string> rgb2 = split( fades[ 1 ], " " )
-		v2 = < 
-			rgb2[ 0 ].tointeger(), 
-			rgb2[ 1 ].tointeger(), 
-			rgb2[ 2 ].tointeger() 
+		v2 = <
+			rgb2[ 0 ].tointeger(),
+			rgb2[ 1 ].tointeger(),
+			rgb2[ 2 ].tointeger()
 		>
 	}
 
@@ -505,9 +510,9 @@ void function fadeText_anim( string text, string fadestring ){
 
 					if( i + charLength <= textlen ){
 						Chat_GameWrite( text.slice( i, i + charLength ) )
-						dtool_playRandomAudio( dynamic_chat_tone, dynamic_chat_totalFX ) 
+						dtool_playRandomAudio( dynamic_chat_tone, dynamic_chat_totalFX )
 						i += charLength
-					} 
+					}
 
 					wait dynamic_chat_speed
 				}
@@ -516,11 +521,18 @@ void function fadeText_anim( string text, string fadestring ){
 			continue
 		}
 
+		int ansiLen = ansiSeqLen( text, i )
+		if( ansiLen > 0 ){
+			Chat_GameWrite( text.slice( i, i + ansiLen ) )
+			i += ansiLen
+			continue
+		}
+
 		int charLength = dtool_byteSliceLength( text[ i ].tointeger() )
 
 		if( i + charLength <= textlen ){
 			string char = text.slice( i, i + charLength )
-			string temp 
+			string temp
 
 			if( fadestring != "" ){
 				temp = parseColor( lerp( ( i + charLength ).tofloat(), textlen.tofloat(), v1, v2 ) )
@@ -530,10 +542,10 @@ void function fadeText_anim( string text, string fadestring ){
 			}
 
 			Chat_GameWrite( temp + char )
-			if( i % dynamic_chat_fxstep == 0 ) 
-				dtool_playRandomAudio( dynamic_chat_tone, dynamic_chat_totalFX ) 
+			if( i % dynamic_chat_fxstep == 0 )
+				dtool_playRandomAudio( dynamic_chat_tone, dynamic_chat_totalFX )
 			i += charLength
-		} 
+		}
 
 		wait dynamic_chat_speed
 	}
@@ -560,14 +572,21 @@ void function text_anim( string text, string messageColor ){
 			continue
 		}
 
+		int ansiLen = ansiSeqLen( text, i )
+		if( ansiLen > 0 ){
+			Chat_GameWrite( text.slice( i, i + ansiLen ) )
+			i += ansiLen
+			continue
+		}
+
 		int charLength = dtool_byteSliceLength( text[ i ].tointeger() )
 
 		if( i + charLength <= len ){
 			Chat_GameWrite( text.slice( i, i + charLength ) )
-			if( i % dynamic_chat_fxstep == 0 ) 
-				dtool_playRandomAudio( dynamic_chat_tone, dynamic_chat_totalFX ) 
+			if( i % dynamic_chat_fxstep == 0 )
+				dtool_playRandomAudio( dynamic_chat_tone, dynamic_chat_totalFX )
 			i += charLength
-		} 
+		}
 
 		wait dynamic_chat_speed
 	}
@@ -586,22 +605,22 @@ string function rainbowText( string text, string fadestring ){
 	int 		a 			= n_keywordColor.len()
 	int 		i 			= 0
 	float		step	 	= colorlen.tofloat() / textlen.tofloat()
-	vector 		v1 
-	vector 		v2 		
+	vector 		v1
+	vector 		v2
 
 	if( fadestring != "" ){
 		array<string> fades = split( fadestring, "," )
 
 		array<string> rgb1 = split( fades[ 0 ], " " )
-		v1 = < 
-			rgb1[ 0 ].tointeger(), 
+		v1 = <
+			rgb1[ 0 ].tointeger(),
 			rgb1[ 1 ].tointeger(),
-			rgb1[ 2 ].tointeger() 
+			rgb1[ 2 ].tointeger()
 		>
 
 		array<string> rgb2 = split( fades[ 1 ], " " )
-		v2 = < 
-			rgb2[ 0 ].tointeger(), 
+		v2 = <
+			rgb2[ 0 ].tointeger(),
 			rgb2[ 1 ].tointeger(),
 			rgb2[ 2 ].tointeger()
 		>
@@ -621,12 +640,19 @@ string function rainbowText( string text, string fadestring ){
 			continue
 		}
 
+		int ansiLen = ansiSeqLen( text, i )
+		if( ansiLen > 0 ){
+			result += text.slice( i, i + ansiLen )
+			i += ansiLen
+			continue
+		}
+
 		int charLength = dtool_byteSliceLength( text[ i ].tointeger() )
 
 		if( i + charLength <= textlen ){
 			string char = text.slice( i, i + charLength )
-			string temp 
-		
+			string temp
+
 			if( fadestring != "" ){
 				temp = parseColor( lerp( ( i + charLength - 1 ).tofloat(), textlen.tofloat() - 1, v1, v2 ) )
 			} else {

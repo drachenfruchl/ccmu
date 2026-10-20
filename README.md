@@ -57,7 +57,7 @@ with the default being the old *"You got mail!"* TTS voice only millenials remem
 
 To use other sounds besides the default *"You got mail!"* TTS voice you have to convert a file into the `.bik` format so that the game can actually play it.  
 
-> A guide on creating `.bik` files can be found on the [official northstar docs](https://docs.northstar.tf/Modding/guides/tools/BIKVideoModding/) )
+> A guide on creating `.bik` files can be found on the [official northstar docs](https://docs.northstar.tf/Modding/guides/tools/BIKVideoModding/)
 
 1. Download the sound
 
@@ -90,7 +90,6 @@ Because this mod requires some functions that I cannot bother to isolate (especi
 
 **Regarding Ion client users (like myself):**  
 Due to the clients custom modsetting design, many, if not all color previews, show up as plain text (e.g: `^FFFFFF00`).  
-
-To circumvent this, you would have to change some of the gamefiles that are responsible for the modsettings menu *(located somewhere in R2Northstar/mods/Northstar.Client)* and replace them with the ones from Vanilla+, which are great for displaying colors and overall readibility.  
+Ive uploaded a simple guide on how to replace your files to get back the old Vanilla+ settings [here](https://gist.github.com/drachenfruchl/0fc3e2ac6ac7ba2b96a4c5452661c431)!
 
 **Users that are still on Vanilla+ do **not** have to worry about any of this**
