@@ -249,9 +249,6 @@ ClClient_MessageStruct function colorchatMU( ClClient_MessageStruct ms ){
 		!show_nettags
 	) return ms
 
-	if( isMsgXCP )
-		return ms
-
 	while( message_buffer > 0 )//|| !IsValid( ms.player ) )
 		wait 0
 	message_buffer++
@@ -450,13 +447,13 @@ string function replaceMessage( string msg, string word, string messageColor ){
 }
 
 int function ansiSeqLen( string text, int i ){
-    if( i >= text.len() ) 
+    if( i >= text.len() )
 		return 0
     if( text[ i ].tointeger() != 27 )
 		return 0
 
     var endPos = text.find( "m", i + 1 )
-    if( !IsValid( endPos ) ) 
+    if( !IsValid( endPos ) )
 		return 0
     expect int( endPos )
 
